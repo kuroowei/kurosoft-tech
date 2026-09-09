@@ -1,6 +1,7 @@
 // src/components/Footer.tsx
 import { Mail } from "lucide-react";
 import { siteConfig, socialLinks } from "../config/site";
+import logo from "../assets/logo.png";
 
 function isConfigured(value: string) {
   return value !== "#" && value !== "";
@@ -42,7 +43,10 @@ export default function Footer() {
     <footer className="border-t border-white/10 px-6 py-12">
       <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-3">
         <div>
-          <p className="font-display text-lg font-semibold text-text">{siteConfig.companyName}</p>
+          <div className="flex items-center gap-3">
+            <img src={logo} alt="Kurosoft Tech logo" className="h-8 w-8" />
+            <p className="font-display text-lg font-semibold text-text">{siteConfig.companyName}</p>
+          </div>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted">{siteConfig.supportingStatement}</p>
         </div>
 
