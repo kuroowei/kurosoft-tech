@@ -37,7 +37,7 @@ export const socialLinks = {
 
 // Contact form endpoint -- leave empty until a real backend/email service exists.
 // TODO: set this once a backend or email service (e.g. Formspree, Resend) is wired up.
-export const CONTACT_FORM_ENDPOINT = "";
+export const CONTACT_FORM_ENDPOINT: string = "https://formspree.io/f/mkjnpawv";
 
 // Featured product: Waste Pickup Scheduler (already live)
 export const GITHUB_WASTE_PICKUP_URL = "https://github.com/kuroowei/waste-pickup-scheduler";

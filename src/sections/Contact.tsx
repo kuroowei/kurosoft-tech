@@ -16,6 +16,8 @@ interface FormErrors {
   message?: string;
 }
 
+type SubmitStatus = "idle" | "submitting" | "success" | "error";
+
 const initialState: FormState = {
   name: "",
   email: "",
@@ -31,7 +33,7 @@ function isValidEmail(email: string) {
 export default function Contact() {
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<FormErrors>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<SubmitStatus>("idle");
 
   const endpointConfigured = CONTACT_FORM_ENDPOINT !== "";
 
@@ -55,7 +57,7 @@ export default function Contact() {
     return nextErrors;
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const nextErrors = validate();
     setErrors(nextErrors);
@@ -64,9 +66,36 @@ export default function Contact() {
       return;
     }
 
-    if (endpointConfigured) {
-      // TODO: wire up real submission once CONTACT_FORM_ENDPOINT is set in src/config/site.ts
-      setSubmitted(true);
+    if (!endpointConfigured) {
+      return;
+    }
+
+    setStatus("submitting");
+
+    try {
+      const response = await fetch(CONTACT_FORM_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          organization: form.organization,
+          projectType: form.projectType,
+          message: form.message,
+        }),
+      });
+
+      if (response.ok) {
+        setStatus("success");
+        setForm(initialState);
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
     }
   }
 
@@ -96,9 +125,15 @@ export default function Contact() {
             </p>
           )}
 
-          {submitted && endpointConfigured && (
+          {status === "success" && (
             <p className="rounded-md border border-teal/30 bg-teal/10 px-4 py-3 text-sm text-teal">
-              Thanks -- your message has been sent.
+              Thanks -- your message has been sent. We&apos;ll get back to you soon.
+            </p>
+          )}
+
+          {status === "error" && (
+            <p className="rounded-md border border-amber/30 bg-amber/10 px-4 py-3 text-sm text-amber">
+              Something went wrong sending your message. Please try again or use our available contact channel.
             </p>
           )}
 
@@ -130,8 +165,8 @@ export default function Contact() {
             {errors.message && <p className="mt-1 text-xs text-amber">{errors.message}</p>}
           </div>
 
-          <button type="submit" className="w-full rounded-md bg-amber px-4 py-3 text-sm font-medium text-ink transition-opacity hover:opacity-90">
-            Send Message
+          <button type="submit" disabled={status === "submitting"} className="w-full rounded-md bg-amber px-4 py-3 text-sm font-medium text-ink transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60">
+            {status === "submitting" ? "Sending..." : "Send Message"}
           </button>
         </form>
       </div>
