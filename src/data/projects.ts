@@ -8,6 +8,8 @@ import {
   VUEXY_CHAT_DEMO_URL,
   VUEXY_CHAT_GITHUB_URL,
 } from "../config/site";
+import wastePickupScreenshot from "../assets/waste-pickup-screenshot.png";
+import vuexyChatScreenshot from "../assets/vuexy-chat-screenshot.png";
 
 export interface Project {
   id: string;
@@ -18,6 +20,7 @@ export interface Project {
   demoUrl: string;
   githubUrl: string;
   status: "Completed" | "In Progress";
+  image: string;
 }
 
 export const projects: Project[] = [
@@ -37,6 +40,7 @@ export const projects: Project[] = [
     demoUrl: WASTE_PICKUP_DEMO_URL,
     githubUrl: GITHUB_WASTE_PICKUP_URL,
     status: "Completed",
+    image: wastePickupScreenshot,
   },
   {
     id: "vuexy-chat-app",
@@ -48,5 +52,6 @@ export const projects: Project[] = [
     demoUrl: VUEXY_CHAT_DEMO_URL,
     githubUrl: VUEXY_CHAT_GITHUB_URL,
     status: "Completed",
+    image: vuexyChatScreenshot,
   },
 ];

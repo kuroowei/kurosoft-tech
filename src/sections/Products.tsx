@@ -32,8 +32,8 @@ export default function Products() {
 
           return (
             <div key={project.id} className="flex flex-col rounded-lg border border-white/10 bg-surface p-6">
-              <div className="flex h-40 items-center justify-center rounded-md border border-dashed border-white/15 bg-ink text-xs text-muted">
-                Product Screenshot -- {project.title}
+              <div className="h-40 overflow-hidden rounded-md border border-white/10 bg-ink">
+                <img src={project.image} alt={`Screenshot of ${project.title}`} className="h-full w-full object-cover object-top" />
               </div>
 
               <span className="mt-4 w-fit rounded-full bg-teal/10 px-3 py-1 text-xs font-medium text-teal">
